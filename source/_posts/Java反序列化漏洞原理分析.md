@@ -68,11 +68,12 @@ Java 反序列化漏洞是近一段时间里一直被重点关注的漏洞，自
   public static void main(String[] args) throws Exception {
 
     Object runtime=Class.forName("java.lang.Runtime")
-      .getMethod("getRuntime",new Class[]{})
-      .invoke(null);
+            .getMethod("getRuntime",new Class[]{})
+            .invoke(null);
+
     Class.forName("java.lang.Runtime")
-      .getMethod("exec", String.class)
-      .invoke(runtime,"calc.exe");
+            .getMethod("exec", String.class)
+            .invoke(runtime,"calc.exe");
     }
   ```
 
@@ -305,15 +306,15 @@ Java 反序列化漏洞是近一段时间里一直被重点关注的漏洞，自
 
 为了实现一个攻击行为，我们需要从目标的系统中找到如下三个条件相关的类，然后将他们合理利用起来。根据漏洞利用过程我们将这三个条件比喻成三个模块以便于理解。
 
-1.  无德的病毒
+1. 无德的病毒
 
     无德的病毒指的是,依托 Java 本身的特性，将恶意代码包装到一个正常的调用流程里，使得在被触发的时候执行恶意的代码逻辑。在上述的模拟代码中 ReflectionObject 就承担这样的角色。
 
-2.  无辜的宿主
+2. 无辜的宿主
 
     无辜的宿主只的是最终被序列化的对象，无辜的原因在于该对象在实现自己的 readObject 方法的时候并没有意识到自身的逻辑在对自身属性进行操作的时候会被恶意代码寄生。上述模拟代码的 ReadObject 就是这样的角色。
 
-3.  无良的媒介
+3. 无良的媒介
 
     无良的媒介指的是，用来将无德的病毒层层包装之后，放入宿主对象的一系列工具类，他们被创造的本意不是为了给病毒利用，而是被攻击者用来将恶意的代码包装到宿主能够接受的类型中。上述模拟代码的 ReflectionChains 就是这样的一个角色。
 
@@ -951,8 +952,8 @@ Java 的反序列化漏洞,涉及的范围相当的广泛，以上的例子仅�
 
   我们可以看到 TemplatesImpl 的 newTransformer 会从\_bytecodes 中将实例化一个类的对象，而该对象的类需要是 AbstractTranslet 的子类。因此我们可以得出这么一个利用的调用链条。
 
-  1.  构建一个 AbstractTranslet 的子类，并在构造函数中写入我们的恶意方法
-  2.  需要找到媒介来触发 newTransformer
+  1. 构建一个 AbstractTranslet 的子类，并在构造函数中写入我们的恶意方法
+  2. 需要找到媒介来触发 newTransformer
 
   构造恶意代码如下
 
