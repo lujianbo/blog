@@ -68,13 +68,12 @@ Java反序列化漏洞是近一段时间里一直被重点关注的漏洞，自�
   ``` java
   public static void main(String[] args) throws Exception {
 
-        Object runtime=Class.forName("java.lang.Runtime")
-                .getMethod("getRuntime",new Class[]{})
-                .invoke(null);
-
-        Class.forName("java.lang.Runtime")
-                .getMethod("exec", String.class)
-                .invoke(runtime,"calc.exe");
+    Object runtime=Class.forName("java.lang.Runtime")
+      .getMethod("getRuntime",new Class[]{})
+      .invoke(null);
+    Class.forName("java.lang.Runtime")
+      .getMethod("exec", String.class)
+      .invoke(runtime,"calc.exe");
     }
   ```
 
